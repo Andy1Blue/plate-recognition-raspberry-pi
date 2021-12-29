@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "lcd": "^3.1.1"
+    "i2c-bus": "^5.2.2",
+    "node-grovepi": "^2.2.2",
+    "sleep": "^6.3.0"
   },
   "devDependencies": {},
   "scripts": {
