@@ -11,11 +11,11 @@ pushButton.watch(function (err, value) { //Watch for hardware interrupts on push
 
   console.log('Button pushed')
   LED.writeSync(1); //turn LED on or off depending on the button state (0 or 1)
-  sleep.usleep(1000);
+  sleep.sleep(1);
   LED.writeSync(0);
-  sleep.usleep(1000);
+  sleep.sleep(1);
   LED.writeSync(1);
-  sleep.usleep(1000);
+  sleep.sleep(1);
   LED.writeSync(0);
 });
 
