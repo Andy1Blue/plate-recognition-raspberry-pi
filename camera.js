@@ -1,17 +1,13 @@
-const PiCamera = require('pi-camera');
-const myCamera = new PiCamera({
-  mode: 'photo',
-  output: `./test.jpg`,
-  width: 640,
-  height: 480,
-  nopreview: true,
-});
+const { exec } = require("child_process");
 
-myCamera
-  .snap()
-  .then((result) => {
-    console.log({ result });
-  })
-  .catch((error) => {
-    console.log({ error });
-  });
+exec('libcamera-jpeg -o test.jpg', (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+    }
+    console.log(`stdout: ${stdout}`);
+});
