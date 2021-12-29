@@ -1,22 +1,3 @@
-// const Lcd = require('lcd');
-// const lcd = new Lcd({rs: 45, e: 44, data: [66, 67, 68, 69], cols: 8, rows: 1});
-
-// lcd.on('ready', _ => {
-//   setInterval(_ => {
-//     lcd.setCursor(0, 0);
-//     lcd.print(new Date().toISOString().substring(11, 19), err => {
-//       if (err) {
-//         throw err;
-//       }
-//     });
-//   }, 1000);
-// });
-
-// process.on('SIGINT', _ => {
-//   lcd.close();
-//   process.exit();
-// });
-
 var i2c = require("./node_modules/i2c-bus/i2c-bus");
 var sleep = require("./node_modules/sleep/");
 var GrovePi = require("node-grovepi").GrovePi
