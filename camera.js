@@ -1,16 +1,14 @@
-const PiCamera = require('pi-camera');
-const myCamera = new PiCamera({
-  mode: 'photo',
-  output: `photos/test.jpg`,
-  width: 640,
-  height: 480,
-  nopreview: true,
+const Raspistill = require('node-raspistill');
+const camera = new Raspistill({
+    verticalFlip: true,
+    width: 800,
+    height: 600
 });
 
-myCamera.snap()
-  .then((result) => {
-    console.log({result});
-  })
-  .catch((error) => {
-    console.log({error});
-  });
+camera.takePhoto('test.jpg');
+
+// const camera = new Raspistill();
+
+// camera.takePhoto().then((photo) => {
+//     ...
+// });

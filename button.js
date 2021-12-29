@@ -1,6 +1,7 @@
 var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
-var LED = new Gpio(3, 'out'); //use GPIO pin 4 as output
-var pushButton = new Gpio(4, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
+var LED = new Gpio(16, 'out'); //use GPIO pin 4 as output
+var pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
+var sleep = require("./node_modules/sleep/");
 
 pushButton.watch(function (err, value) { //Watch for hardware interrupts on pushButton GPIO, specify callback function
   if (err) { //if an error
@@ -9,7 +10,13 @@ pushButton.watch(function (err, value) { //Watch for hardware interrupts on push
   }
 
   console.log('Button pushed')
-  LED.writeSync(value); //turn LED on or off depending on the button state (0 or 1)
+  LED.writeSync(1); //turn LED on or off depending on the button state (0 or 1)
+  sleep.usleep(1000);
+  LED.writeSync(0);
+  sleep.usleep(1000);
+  LED.writeSync(1);
+  sleep.usleep(1000);
+  LED.writeSync(0);
 });
 
 function unexportOnClose() { //function to run when exiting program

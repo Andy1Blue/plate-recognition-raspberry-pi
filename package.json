@@ -6,8 +6,8 @@
   "dependencies": {
     "i2c-bus": "^5.2.2",
     "node-grovepi": "^2.2.2",
+    "node-raspistill": "^2.0.1",
     "onoff": "^6.0.3",
-    "pi-camera": "^1.6.0",
     "sleep": "^6.3.0"
   },
   "devDependencies": {},
