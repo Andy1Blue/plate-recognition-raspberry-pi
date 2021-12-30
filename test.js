@@ -12,15 +12,6 @@ var Board = GrovePi.board;
 var DISPLAY_RGB_ADDR = 0x62;
 var DISPLAY_TEXT_ADDR = 0x3e;
 
-function setRGB(i2c1, r, g, b) {
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 0, 0);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 1, 0);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 0x08, 0xaa);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 4, r);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 3, g);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 2, b);
-}
-
 function textCommand(i2c1, cmd) {
   i2c1.writeByteSync(DISPLAY_TEXT_ADDR, 0x80, cmd);
 }
@@ -60,23 +51,9 @@ function identify(id, path) {
 
     const a = stdout.split('\n');
 
-    var board = new Board({
-      debug: true,
-      onError: function (err) {
-        console.log('Something wrong just happened');
-        console.log(err);
-      },
-      onInit: function (res) {
-        if (res) {
-          console.log('GrovePi Version :: ' + board.version());
-
-          var i2c1 = i2c.openSync(1);
-          setText(i2c1, `${a[1]}\n${a[2]}`);
-          i2c1.closeSync();
-        }
-      },
-    });
-    board.init();
+    var i2c1 = i2c.openSync(1);
+    setText(i2c1, `${a[1]}\n${a[2]}`);
+    i2c1.closeSync();
   });
 }
 
