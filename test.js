@@ -6,6 +6,8 @@ const { exec } = require('child_process');
 var i2c = require('./node_modules/i2c-bus/i2c-bus');
 var sleep = require('./node_modules/sleep/');
 var GrovePi = require('node-grovepi').GrovePi;
+var fs = require('fs'),
+var axios = require('axios');
 
 var Board = GrovePi.board;
 
@@ -16,13 +18,14 @@ function textCommand(i2c1, cmd) {
 }
 
 function setText(i2c1, text) {
-  textCommand(i2c1, 0x01); // clear display
+  textCommand(i2c1, 0x01);
   sleep.usleep(50000);
-  textCommand(i2c1, 0x08 | 0x04); // display on, no cursor
-  textCommand(i2c1, 0x28); // 2 lines
+  textCommand(i2c1, 0x08 | 0x04);
+  textCommand(i2c1, 0x28);
   sleep.usleep(50000);
   var count = 0;
   var row = 0;
+
   for (var i = 0, len = text.length; i < len; i++) {
     if (text[i] === '\n' || count === 16) {
       count = 0;
@@ -31,29 +34,36 @@ function setText(i2c1, text) {
       textCommand(i2c1, 0xc0);
       if (text[i] === '\n') continue;
     }
+
     count++;
     i2c1.writeByteSync(DISPLAY_TEXT_ADDR, 0x40, text[i].charCodeAt(0));
   }
+
 }
 
-function identify(id, path) {
-  exec(`alpr -c eu ${path}`, (error, stdout, stderr) => {
-    if (error) {
-      console.log(`error: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.log(`##1 stderr: ${stderr}`);
-      return;
-    }
-    console.log(`##FINISHED stdout: ${stdout}`); ///
+async function identify({path,image}) {
+  // exec(`alpr -c eu ${path}`, (error, stdout, stderr) => {
+  //   if (error) {
+  //     console.log(`error: ${error.message}`);
+  //     return;
+  //   }
+  //   if (stderr) {
+  //     console.log(`##1 stderr: ${stderr}`);
+  //     return;
+  //   }
+  //   console.log(`##FINISHED stdout: ${stdout}`); ///
 
-    const a = stdout.split('\n');
+  //   const a = stdout.split('\n');
 
-    var i2c1 = i2c.openSync(1);
-    setText(i2c1, `${a[1]}\n${a[2]}`);
-    i2c1.closeSync();
-  });
+  //   var i2c1 = i2c.openSync(1);
+  //   setText(i2c1, `${a[1]}\n${a[2]}`);
+  //   i2c1.closeSync();
+  // });
+
+  // axios
+  const response = await axios.post('https://api.platerecognizer.com/v1/plate-reader/', {upload:image,regions:'pl'}, { headers:{Authorization: `Token ${env.PLATE_RECOGNIZER_API_KEY}`,  "Content-Type" : "image/jpg"} })
+
+  console.log(response);
 }
 
 pushButton.watch(function (err, value) {
@@ -98,7 +108,9 @@ pushButton.watch(function (err, value) {
         setText(i2c1, 'PLATE\nPhoto taken');
         i2c1.closeSync();
 
-        identify(0, 'test.jpg');
+var image = fs.createReadStream(filename)
+
+        identify(0, {image,path: 'test.jpg'});
     });
   }
 });
