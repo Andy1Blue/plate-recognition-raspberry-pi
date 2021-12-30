@@ -94,7 +94,7 @@ pushButton.watch(function (err, value) {
         console.log(`stderr: ${stderr}`);
         return;
       }
-      console.log(`stdout: ${stdout}`);
+      console.log(`Photo taken: ${stdout}`);
       
       LED.writeSync(0);
       LED.writeSync(1);
@@ -104,7 +104,11 @@ pushButton.watch(function (err, value) {
       LED.writeSync(1);
       LED.writeSync(0);
       LED.writeSync(1);
-  
+
+      var i2c1 = i2c.openSync(1);
+      setText(i2c1, 'PLATE\nPhoto taken');
+      i2c1.closeSync();
+
       identify(0, 'test.jpg');
     });
 
