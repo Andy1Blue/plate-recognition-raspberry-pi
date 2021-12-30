@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 var Gpio = require('onoff').Gpio;
 var LED = new Gpio(16, 'out');
 var pushButton = new Gpio(17, 'in', 'both');
