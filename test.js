@@ -9,7 +9,6 @@ var GrovePi = require('node-grovepi').GrovePi;
 
 var Board = GrovePi.board;
 
-var DISPLAY_RGB_ADDR = 0x62;
 var DISPLAY_TEXT_ADDR = 0x3e;
 
 function textCommand(i2c1, cmd) {
@@ -65,23 +64,23 @@ pushButton.watch(function (err, value) {
 
   console.log('Button pushed');
 
-  var board = new Board({
-    debug: true,
-    onError: function (err) {
-      console.log('Something wrong just happened');
-      console.log(err);
-    },
-    onInit: function (res) {
-      if (res) {
-        console.log('GrovePi Version :: ' + board.version());
+  // var board = new Board({
+  //   debug: true,
+  //   onError: function (err) {
+  //     console.log('Something wrong just happened');
+  //     console.log(err);
+  //   },
+  //   onInit: function (res) {
+  //     if (res) {
+  //       console.log('GrovePi Version :: ' + board.version());
 
         var i2c1 = i2c.openSync(1);
         setText(i2c1, 'PLATE\nHELLO');
         i2c1.closeSync();
-      }
-    },
-  });
-  board.init();
+  //     }
+  //   },
+  // });
+  // board.init();
 
   if (value === 1) {
     LED.writeSync(1);
@@ -96,11 +95,20 @@ pushButton.watch(function (err, value) {
         return;
       }
       console.log(`stdout: ${stdout}`);
+      
+      LED.writeSync(0);
+      LED.writeSync(1);
+      LED.writeSync(0);
+      LED.writeSync(1);
+      LED.writeSync(0);
+      LED.writeSync(1);
+      LED.writeSync(0);
+      LED.writeSync(1);
+  
+      identify(0, 'test.jpg');
     });
 
-    LED.writeSync(0);
 
-    identify(0, 'test.jpg');
   }
 });
 
