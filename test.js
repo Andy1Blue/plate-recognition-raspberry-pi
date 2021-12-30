@@ -61,7 +61,7 @@ async function identify({path,image}) {
   // });
 
   // axios
-  const response = await axios.post('https://api.platerecognizer.com/v1/plate-reader/', {upload:image,regions:'pl'}, { headers:{Authorization: `Token ${env.PLATE_RECOGNIZER_API_KEY}`,  "Content-Type" : "image/jpg"} })
+  const response = await axios.post('https://api.platerecognizer.com/v1/plate-reader/', {upload:image,regions:'pl'}, { headers:{Authorization: `Token ${process.env.PLATE_RECOGNIZER_API_KEY}`,  "Content-Type" : "image/jpg"} })
 
   console.log(response);
 }
