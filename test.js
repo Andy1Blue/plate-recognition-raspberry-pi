@@ -46,39 +46,18 @@ function setText(i2c1, text) {
   }
 }
 
-var openalpr = require('node-openalpr');
-
 function identify(id, path) {
-  console.log(
-    openalpr.IdentifyLicense(path, function (error, output) {
-      var results = output.results;
-      console.log(id + ' ' + output.processing_time_ms + ' ' + (results.length > 0 ? results[0].plate : 'No results'));
-
-
-      var board = new Board({
-        debug: true,
-        onError: function (err) {
-          console.log('Something wrong just happened');
-          console.log(err);
-        },
-        onInit: function (res) {
-          if (res) {
-            console.log('GrovePi Version :: ' + board.version());
-            var i2c1 = i2c.openSync(1);
-            setText(i2c1, 'PLATE RECOGNITION\n' + results.length > 0 ? results[0].plate : 'No results');
-            setRGB(i2c1, 55, 55, 255);
-            i2c1.closeSync();
-          }
-        },
-      });
-      board.init();
-
-
-      if (id == 349) {
-        console.log(openalpr.Stop());
-      }
-    })
-  );
+  exec('alpr -c us ea7the.jpg', (error, stdout, stderr) => {
+    if (error) {
+      console.log(`error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.log(`##1 stderr: ${stderr}`);
+      return;
+    }
+    console.log(`##FINISHED stdout: ${stdout}`); ///
+  });
 }
 
 pushButton.watch(function (err, value) {

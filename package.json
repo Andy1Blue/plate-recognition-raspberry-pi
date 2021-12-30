@@ -7,9 +7,7 @@
     "i2c-bus": "^5.2.2",
     "node-grovepi": "^2.2.2",
     "onoff": "^6.0.3",
-    "sleep": "^6.3.0",
-    "node-pre-gyp": "https://github.com/mapbox/node-pre-gyp.git#8036d17",
-    "node-openalpr": "1.1.1"
+    "sleep": "^6.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
