@@ -74,9 +74,9 @@ pushButton.watch(function (err, value) {
   //     if (res) {
   //       console.log('GrovePi Version :: ' + board.version());
 
-        var i2c1 = i2c.openSync(1);
-        setText(i2c1, 'PLATE\nHELLO');
-        i2c1.closeSync();
+  var i2c1 = i2c.openSync(1);
+  setText(i2c1, 'PLATE\nHELLO');
+  i2c1.closeSync();
   //     }
   //   },
   // });
@@ -91,28 +91,26 @@ pushButton.watch(function (err, value) {
         return;
       }
       if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
+        // console.log(`stderr: ${stderr}`);
+
+        console.log(`Photo taken: ${stdout}`);
+
+        LED.writeSync(0);
+        LED.writeSync(1);
+        LED.writeSync(0);
+        LED.writeSync(1);
+        LED.writeSync(0);
+        LED.writeSync(1);
+        LED.writeSync(0);
+        LED.writeSync(1);
+
+        var i2c1 = i2c.openSync(1);
+        setText(i2c1, 'PLATE\nPhoto taken');
+        i2c1.closeSync();
+
+        identify(0, 'test.jpg');
       }
-      console.log(`Photo taken: ${stdout}`);
-      
-      LED.writeSync(0);
-      LED.writeSync(1);
-      LED.writeSync(0);
-      LED.writeSync(1);
-      LED.writeSync(0);
-      LED.writeSync(1);
-      LED.writeSync(0);
-      LED.writeSync(1);
-
-      var i2c1 = i2c.openSync(1);
-      setText(i2c1, 'PLATE\nPhoto taken');
-      i2c1.closeSync();
-
-      identify(0, 'test.jpg');
     });
-
-
   }
 });
 
