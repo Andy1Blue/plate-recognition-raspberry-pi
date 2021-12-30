@@ -6,12 +6,13 @@
   "dependencies": {
     "i2c-bus": "^5.2.2",
     "node-grovepi": "^2.2.2",
-    "node-red-contrib-camerapi": "0.0.39",
     "onoff": "^6.0.3",
-    "pi-camera": "^1.6.0",
-    "sleep": "^6.3.0"
+    "sleep": "^6.3.0",
+    "node-pre-gyp": "0.12.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "node-openalpr": "1.1.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
