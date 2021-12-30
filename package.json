@@ -8,10 +8,10 @@
     "node-grovepi": "^2.2.2",
     "onoff": "^6.0.3",
     "sleep": "^6.3.0",
-    "node-pre-gyp": "0.12.0"
+    "node-openalpr": "1.1.1"
   },
   "devDependencies": {
-    "node-openalpr": "1.1.1"
+    "node-pre-gyp": "0.12.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
