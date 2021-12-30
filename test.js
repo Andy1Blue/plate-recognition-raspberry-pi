@@ -64,23 +64,23 @@ pushButton.watch(function (err, value) {
 
   console.log('Button pushed');
 
-  // var board = new Board({
-  //   debug: true,
-  //   onError: function (err) {
-  //     console.log('Something wrong just happened');
-  //     console.log(err);
-  //   },
-  //   onInit: function (res) {
-  //     if (res) {
-  //       console.log('GrovePi Version :: ' + board.version());
+  var board = new Board({
+    debug: true,
+    onError: function (err) {
+      console.log('Something wrong just happened');
+      console.log(err);
+    },
+    onInit: function (res) {
+      if (res) {
+        console.log('GrovePi Version :: ' + board.version());
 
   var i2c1 = i2c.openSync(1);
-  setText(i2c1, 'PLATE\nHELLO');
+  setText(i2c1, 'PLATE\nHello');
   i2c1.closeSync();
-  //     }
-  //   },
-  // });
-  // board.init();
+      }
+    },
+  });
+  board.init();
 
   if (value === 1) {
     LED.writeSync(1);
@@ -90,26 +90,15 @@ pushButton.watch(function (err, value) {
         console.log(`error: ${error.message}`);
         return;
       }
-      if (stderr) {
-        // console.log(`stderr: ${stderr}`);
-
-        console.log(`Photo taken: ${stdout}`);
+        console.log(`Photo taken ${stdout}`);
 
         LED.writeSync(0);
-        LED.writeSync(1);
-        LED.writeSync(0);
-        LED.writeSync(1);
-        LED.writeSync(0);
-        LED.writeSync(1);
-        LED.writeSync(0);
-        LED.writeSync(1);
 
         var i2c1 = i2c.openSync(1);
         setText(i2c1, 'PLATE\nPhoto taken');
         i2c1.closeSync();
 
         identify(0, 'test.jpg');
-      }
     });
   }
 });
