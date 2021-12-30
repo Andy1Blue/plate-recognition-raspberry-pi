@@ -108,7 +108,7 @@ pushButton.watch(function (err, value) {
         setText(i2c1, 'PLATE\nPhoto taken');
         i2c1.closeSync();
 
-var image = fs.createReadStream(filename)
+var image = fs.createReadStream('./test.jpg')
 
         identify(0, {image,path: 'test.jpg'});
     });
