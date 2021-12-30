@@ -8,7 +8,7 @@ var sleep = require('./node_modules/sleep/');
 var GrovePi = require('node-grovepi').GrovePi;
 var fs = require('fs');
 var axios = require('axios');
-
+var FormData = require('form-data');
 var Board = GrovePi.board;
 
 var DISPLAY_TEXT_ADDR = 0x3e;
@@ -40,7 +40,7 @@ function setText(i2c1, text) {
   }
 }
 
-async function identify({ path, image }) {
+function identify({ path, image }) {
   // exec(`alpr -c eu ${path}`, (error, stdout, stderr) => {
   //   if (error) {
   //     console.log(`error: ${error.message}`);
@@ -60,17 +60,28 @@ async function identify({ path, image }) {
   // });
 
   // axios
-  try {
-    const response = await axios.post(
-      'https://api.platerecognizer.com/v1/plate-reader/',
-      { upload: image, regions: 'pl' },
-      { headers: { Authorization: `Token ${process.env.PLATE_RECOGNIZER_API_KEY}`, 'Content-Type': 'image/jpg' } }
-    );
 
-    console.log({ response });
-  } catch (error) {
-    console.log({ error });
-  }
+  var data = new FormData();
+  data.append('upload', fs.createReadStream(path));
+  data.append('regions', 'pl');
+  console.log(process.env.PLATE_RECOGNIZER_API_KEY, fs.createReadStream(path));
+  var config = {
+    method: 'post',
+    url: 'https://api.platerecognizer.com/v1/plate-reader/',
+    headers: {
+      Authorization: `Token ${process.env.PLATE_RECOGNIZER_API_KEY}`,
+      ...data.getHeaders(),
+    },
+    data: data,
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 pushButton.watch(function (err, value) {
