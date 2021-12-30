@@ -11,7 +11,7 @@
     "node-openalpr": "1.1.1"
   },
   "devDependencies": {
-    "node-pre-gyp": "0.12.0"
+    "@mapbox/node-pre-gyp": "1.0.8"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
