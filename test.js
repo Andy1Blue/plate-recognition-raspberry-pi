@@ -6,7 +6,7 @@ const { exec } = require('child_process');
 var i2c = require('./node_modules/i2c-bus/i2c-bus');
 var sleep = require('./node_modules/sleep/');
 var GrovePi = require('node-grovepi').GrovePi;
-var fs = require('fs')
+var fs = require('fs');
 var axios = require('axios');
 
 var Board = GrovePi.board;
@@ -38,10 +38,9 @@ function setText(i2c1, text) {
     count++;
     i2c1.writeByteSync(DISPLAY_TEXT_ADDR, 0x40, text[i].charCodeAt(0));
   }
-
 }
 
-async function identify({path,image}) {
+async function identify({ path, image }) {
   // exec(`alpr -c eu ${path}`, (error, stdout, stderr) => {
   //   if (error) {
   //     console.log(`error: ${error.message}`);
@@ -61,9 +60,17 @@ async function identify({path,image}) {
   // });
 
   // axios
-  const response = await axios.post('https://api.platerecognizer.com/v1/plate-reader/', {upload:image,regions:'pl'}, { headers:{Authorization: `Token ${process.env.PLATE_RECOGNIZER_API_KEY}`,  "Content-Type" : "image/jpg"} })
+  try {
+    const response = await axios.post(
+      'https://api.platerecognizer.com/v1/plate-reader/',
+      { upload: image, regions: 'pl' },
+      { headers: { Authorization: `Token ${process.env.PLATE_RECOGNIZER_API_KEY}`, 'Content-Type': 'image/jpg' } }
+    );
 
-  console.log(response);
+    console.log({ response });
+  } catch (error) {
+    console.log({ error });
+  }
 }
 
 pushButton.watch(function (err, value) {
@@ -84,9 +91,9 @@ pushButton.watch(function (err, value) {
       if (res) {
         console.log('GrovePi Version :: ' + board.version());
 
-  var i2c1 = i2c.openSync(1);
-  setText(i2c1, 'PLATE\nHello');
-  i2c1.closeSync();
+        var i2c1 = i2c.openSync(1);
+        setText(i2c1, 'PLATE\nHello');
+        i2c1.closeSync();
       }
     },
   });
@@ -100,17 +107,17 @@ pushButton.watch(function (err, value) {
         console.log(`error: ${error.message}`);
         return;
       }
-        console.log(`Photo taken ${stdout}`);
+      console.log(`Photo taken ${stdout}`);
 
-        LED.writeSync(0);
+      LED.writeSync(0);
 
-        var i2c1 = i2c.openSync(1);
-        setText(i2c1, 'PLATE\nPhoto taken');
-        i2c1.closeSync();
+      var i2c1 = i2c.openSync(1);
+      setText(i2c1, 'PLATE\nPhoto taken');
+      i2c1.closeSync();
 
-var image = fs.createReadStream('./test.jpg')
+      var image = fs.createReadStream('./test.jpg');
 
-        identify(0, {image,path: 'test.jpg'});
+      identify(0, { image, path: 'test.jpg' });
     });
   }
 });
