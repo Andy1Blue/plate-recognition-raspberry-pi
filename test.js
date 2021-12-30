@@ -38,7 +38,7 @@ function setText(i2c1, text) {
 }
 
 function identify(id, path) {
-  exec('alpr -c us ea7the.jpg', (error, stdout, stderr) => {
+  exec(`alpr -c eu ${path}`, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
