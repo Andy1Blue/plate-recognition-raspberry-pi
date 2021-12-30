@@ -57,6 +57,26 @@ function identify(id, path) {
       return;
     }
     console.log(`##FINISHED stdout: ${stdout}`); ///
+
+    const a = stdout.split('\n');
+
+    var board = new Board({
+      debug: true,
+      onError: function (err) {
+        console.log('Something wrong just happened');
+        console.log(err);
+      },
+      onInit: function (res) {
+        if (res) {
+          console.log('GrovePi Version :: ' + board.version());
+
+          var i2c1 = i2c.openSync(1);
+          setText(i2c1, `${a[1]}\n${a[2]}`);
+          i2c1.closeSync();
+        }
+      },
+    });
+    board.init();
   });
 }
 
@@ -79,8 +99,7 @@ pushButton.watch(function (err, value) {
         console.log('GrovePi Version :: ' + board.version());
 
         var i2c1 = i2c.openSync(1);
-        setText(i2c1, 'PLATE RECOGNITION\nHELLO');
-        setRGB(i2c1, 55, 55, 255);
+        setText(i2c1, 'PLATE\nHELLO');
         i2c1.closeSync();
       }
     },
@@ -103,9 +122,6 @@ pushButton.watch(function (err, value) {
     });
 
     LED.writeSync(0);
-
-    openalpr.Start();
-    openalpr.GetVersion();
 
     identify(0, 'test.jpg');
   }
