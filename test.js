@@ -127,7 +127,7 @@ pushButton.watch(function (err, value) {
 
       var image = fs.createReadStream('./test.jpg');
 
-      identify(0, { image, path: 'test.jpg' });
+      identify({ image, path: 'test.jpg' });
     });
   }
 });
