@@ -6,7 +6,7 @@ const { exec } = require('child_process');
 var i2c = require('./node_modules/i2c-bus/i2c-bus');
 var sleep = require('./node_modules/sleep/');
 var GrovePi = require('node-grovepi').GrovePi;
-var fs = require('fs'),
+var fs = require('fs')
 var axios = require('axios');
 
 var Board = GrovePi.board;
