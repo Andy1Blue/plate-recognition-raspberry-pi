@@ -1,5 +1,9 @@
 require('dotenv').config()
 
+const Camera = require('./modules/camera');
+
+const camera = new Camera();
+
 var Gpio = require('onoff').Gpio;
 var LED = new Gpio(16, 'out');
 var pushButton = new Gpio(17, 'in', 'both');
@@ -12,7 +16,7 @@ var axios = require('axios');
 var FormData = require('form-data');
 var Board = GrovePi.board;
 
-var DISPLAY_TEXT_ADDR = 0x3e;
+var DISPLAY_TEXT_ADDR = 0x3e;GrovePi
 
 function textCommand(i2c1, cmd) {
   i2c1.writeByteSync(DISPLAY_TEXT_ADDR, 0x80, cmd);
