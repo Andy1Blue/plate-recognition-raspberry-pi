@@ -3,7 +3,7 @@ const { exec } = require('child_process');
 const DIR = '../photos/';
 const EXTENSION = '.jpg';
 
-class Camera {
+module.exports = class Camera {
   constructor() {}
 
   takePhoto(fileName = Date.now()) {
@@ -17,6 +17,4 @@ class Camera {
       });
     });
   }
-}
-
-module.exports = Camera;
+};
