@@ -1,11 +1,13 @@
+const http = require('./http');
+
 require('dotenv').config();
 
-function uploadPhoto(path) {
+async function uploadPhoto(path) {
   var data = new FormData();
   data.append('upload', fs.createReadStream(path));
   data.append('regions', 'pl');
 
-  var config = {
+  const response = await http({
     method: 'post',
     url: 'https://api.platerecognizer.com/v1/plate-reader/',
     headers: {
@@ -13,15 +15,9 @@ function uploadPhoto(path) {
       ...data.getHeaders(),
     },
     data: data,
-  };
+  });
 
-  axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  return response.data;
 }
 
 module.exports = {
