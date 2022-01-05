@@ -1,5 +1,11 @@
 const axios = require('axios');
 
-module.exports = function http({ method, url, data, headers }) {
-  return axios({ method, url, data, headers });
+const allowedHttpMethods = {
+  post: 'post',
 };
+
+function http({ method, url, data, headers }) {
+  return axios({ method, url, data, headers });
+}
+
+module.exports = { allowedHttpMethods, http };
