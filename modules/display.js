@@ -1,7 +1,7 @@
 var i2c = require('./node_modules/i2c-bus/i2c-bus');
 var sleep = require('./node_modules/sleep/');
-// var GrovePi = require('node-grovepi').GrovePi;
-// var Board = GrovePi.board;
+var GrovePi = require('node-grovepi').GrovePi;
+var Board = GrovePi.board;
 var DISPLAY_RGB_ADDR = 0x62;
 var DISPLAY_TEXT_ADDR = 0x3e;
 
@@ -19,7 +19,26 @@ function textCommand(i2c1, cmd) {
 }
 
 module.exports = class Display {
-  constructor() {}
+  constructor() {
+    // TODO: needs refactor
+    var board = new Board({
+      debug: true,
+      onError: function (error) {
+        console.log('Something wrong just happened');
+        console.log({ error });
+      },
+      onInit: function (res) {
+        if (res) {
+          console.log('GrovePi Version :: ' + board.version());
+          var i2c1 = i2c.openSync(1);
+          setText(i2c1, '-- HELLO! --\nPLATE RECO');
+          setRGB(i2c1, 55, 55, 255);
+          i2c1.closeSync();
+        }
+      },
+    });
+    board.init();
+  }
 
   setText(i2c1, text) {
     var i2c1 = i2c.openSync(1);
@@ -48,22 +67,3 @@ module.exports = class Display {
     i2c1.closeSync();
   }
 };
-
-// TODO: needs refactor
-// var board = new Board({
-//     debug: true,
-//     onError: function(err) {
-//       console.log("Something wrong just happened")
-//       console.log(err)
-//     },
-//     onInit: function(res) {
-//       if (res) {
-//         console.log("GrovePi Version :: " + board.version())
-//         var i2c1 = i2c.openSync(1);
-//         setText(i2c1, "Memet is een\nEINDBAAS");
-//         setRGB(i2c1, 55, 55, 255);
-//         i2c1.closeSync();
-//       }
-//     }
-//   })
-// board.init();

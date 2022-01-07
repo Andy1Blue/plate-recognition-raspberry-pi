@@ -1,4 +1,4 @@
-const { allowedHttpMethods, http } = require('./http');
+const { allowedHttpMethod, http } = require('./http');
 
 require('dotenv').config();
 
@@ -8,7 +8,7 @@ async function uploadPhoto(path) {
   data.append('regions', 'pl');
 
   const response = await http({
-    method: allowedHttpMethods.post,
+    method: allowedHttpMethod.post,
     url: process.env.PLATE_RECOGNIZER_API_URL,
     headers: {
       Authorization: `Token ${process.env.PLATE_RECOGNIZER_API_KEY}`,
