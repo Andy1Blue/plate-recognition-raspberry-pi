@@ -26,7 +26,7 @@ module.exports = class Display {
     board.init();
   }
 
-  setText(i2c1, text) {
+  setText(text) {
     var i2c1 = i2c.openSync(1);
 
     textCommand(i2c1, 0x01); // clear display
