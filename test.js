@@ -24,27 +24,30 @@ buttonLed.watchButton(async function () {
   }
 
   if (filePath) {
+    let openAlprResults = [];
     try {
       display.setText(`${appTitle}\nOpenAlpr analyzing`);
-      const openAlprResult = await openAlpr.checkPhoto(filePath);
-
-      console.log({ openAlprResult });
+      openAlprResults = (await openAlpr.checkPhoto(filePath).results) || [];
     } catch {
       display.setText(`${appTitle}\nOpenAlpr ERROR!`);
     }
 
-    try {
-      display.setText(`${appTitle}\nUploading photo...`);
-      const response = await plateRecognizer.uploadPhoto(filePath);
+    console.log({ openAlprResults });
 
-      if (response) {
-        console.log({ response });
-        display.setText(`${appTitle}\n${response}`);
+    if (openAlprResults.length === 0) {
+      try {
+        display.setText(`${appTitle}\nUploading photo...`);
+        const response = await plateRecognizer.uploadPhoto(filePath);
+
+        if (response) {
+          console.log({ response });
+          display.setText(`${appTitle}\n${response}`);
+        }
+      } catch (error) {
+        display.setText(`${appTitle}\nUploading ERROR!`);
+
+        return;
       }
-    } catch (error) {
-      display.setText(`${appTitle}\nUploading ERROR!`);
-
-      return;
     }
   }
 });
