@@ -18,7 +18,7 @@ module.exports = class ButtonLed {
   }
 
   watchButton(callback) {
-    pushButton.watch(function (err, value) {
+    pushButton.watch(function (error, value) {
       if (error) {
         console.log({ error }, `${logPrefix} Problem while init button`);
 

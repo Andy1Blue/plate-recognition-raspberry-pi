@@ -16,11 +16,10 @@ module.exports = class Display {
       debug: true,
       onError: function (error) {
         console.log({ error }, `${logPrefix} Something wrong just happened`);
-        console.log();
       },
       onInit: function (res) {
         if (res) {
-          console.log('GrovePi Version :: ' + board.version);
+          console.log(`${logPrefix} Successfully initiating`);
         }
       },
     });
