@@ -69,7 +69,7 @@ buttonLed.watchButton(async function () {
   buttonLed.lightLed(1);
   display.setText(`${appTitle}\n-- Hello --`);
 
-  const filePath = await takePhoto();
+  const filePath = takePhoto();
 
   if (filePath) {
     let result = await openAlprCheckPhoto();
