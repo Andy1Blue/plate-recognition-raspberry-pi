@@ -30,7 +30,7 @@ async function openAlprCheckPhoto() {
   let openAlprResults = [];
 
   try {
-    const openAlprResult = await openAlpr.checkPhoto(filePath);
+    const openAlprResult = await openAlpr.checkPhoto(filePath, undefined);
 
     if (openAlprResult) {
       openAlprResults = openAlprResult.results;
