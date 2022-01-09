@@ -12,18 +12,18 @@ const openAlpr = new OpenAlpr();
 
 const appTitle = '# Plate reco #';
 
-async function takePhoto() {
-  display.setText(`${appTitle}\nTaking photo...`);
-  const filePath = '';
+// async function takePhoto() {
+//   display.setText(`${appTitle}\nTaking photo...`);
+//   const filePath = '';
 
-  try {
-    filePath = await camera.takePhoto(undefined, true);
-  } catch (error) {
-    display.setText(`${appTitle}\nTaking photo ERROR!`);
-  }
+//   try {
+//     filePath = await camera.takePhoto(undefined, true);
+//   } catch (error) {
+//     display.setText(`${appTitle}\nTaking photo ERROR!`);
+//   }
 
-  return filePath;
-}
+//   return filePath;
+// }
 
 async function openAlprCheckPhoto() {
   display.setText(`${appTitle}\nOpenAlpr analyzing`);
@@ -69,7 +69,15 @@ buttonLed.watchButton(async function () {
   buttonLed.lightLed(1);
   display.setText(`${appTitle}\n-- Hello --`);
 
-  const filePath = takePhoto();
+  // const filePath = await takePhoto();
+  display.setText(`${appTitle}\nTaking photo...`);
+  const filePath = '';
+
+  try {
+    filePath = await camera.takePhoto(undefined, true);
+  } catch (error) {
+    display.setText(`${appTitle}\nTaking photo ERROR!`);
+  }
 
   if (filePath) {
     let result = await openAlprCheckPhoto();
