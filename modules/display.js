@@ -30,10 +30,6 @@ module.exports = class Display {
       onInit: function (res) {
         if (res) {
           console.log('GrovePi Version :: ' + board.version());
-          var i2c1 = i2c.openSync(1);
-          setText(i2c1, '-- HELLO! --\nPLATE RECO');
-          setRGB(i2c1, 55, 55, 255);
-          i2c1.closeSync();
         }
       },
     });
