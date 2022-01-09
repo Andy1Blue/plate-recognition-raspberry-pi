@@ -13,7 +13,7 @@ module.exports = class Camera {
 
     return new Promise((resolve, reject) => {
       exec(
-        `libcamera-still -e jpg -r -n -o ${path} -t 100`,
+        `libcamera-still -t 0 -e jpg -r -n --rotation 180 -o ${path}`,
         (error, stdout, stderr) => {
           if (error) {
             console.log({ error }, `${logPrefix} Problem while taking photo`);
