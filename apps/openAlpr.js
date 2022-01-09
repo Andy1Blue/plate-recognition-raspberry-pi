@@ -6,11 +6,9 @@ module.exports = class OpenAlpr {
   constructor() {}
 
   checkPhoto(path, country = 'eu') {
-    const path = `${DIR}${fileName}${EXTENSION}`;
-
     return new Promise((resolve, reject) => {
       exec(
-        `alpr -c ${country} ${path}`,
+        `alpr --clock -j -c ${country} ${path}`,
         (error, stdout, stderr) => {
           if (error) {
             console.log({ error }, `${logPrefix} Problem while checking with Alpr`);
