@@ -25,16 +25,16 @@ buttonLed.watchButton(async function () {
 
   if (filePath) {
     try {
-    display.setText(`${appTitle}\nOpenAlpr analyzing`);
-       const openAlprResult = await openAlpr.checkPhoto(filePath);
+      display.setText(`${appTitle}\nOpenAlpr analyzing`);
+      const openAlprResult = await openAlpr.checkPhoto(filePath);
 
-       console.log({openAlprResult})
+      console.log({ openAlprResult });
     } catch {
-        display.setText(`${appTitle}\nOpenAlpr ERROR!`);
+      display.setText(`${appTitle}\nOpenAlpr ERROR!`);
     }
 
     // try {
-        //   display.setText(`${appTitle}\nUploading photo...`);
+    //   display.setText(`${appTitle}\nUploading photo...`);
     //   const response = await uploadPhoto(filePath);
 
     //   if (response) {
