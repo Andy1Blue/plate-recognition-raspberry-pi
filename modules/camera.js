@@ -14,7 +14,7 @@ module.exports = class Camera {
         }
 
         console.log({ stdout, stderr });
-        resolve(`${DIR}${fileName}${EXTENSION}`);
+        resolve(`${fileName}${EXTENSION}`);
       });
     });
   }

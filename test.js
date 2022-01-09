@@ -8,17 +8,15 @@ const camera = new Camera();
 const display = new Display();
 
 buttonLed.watchButton(async function () {
+  buttonLed.lightLed(1);
   display.setText('-- Hello --\n# Plate reco #');
-  buttonLed.lightLed(3);
-  buttonLed.lightLed(3);
-  buttonLed.lightLed(3);
 
-  const filePath = await camera.takePhoto();
+  const fileName = await camera.takePhoto();
 
   display.setText('# Plate reco #\nTaking photo...');
 
-  if (filePath) {
-    const response = await uploadPhoto(filePath);
+  if (fileName) {
+    const response = await uploadPhoto(`./photos/${fileName}`);
 
     display.setText('# Plate reco #\nUploading photo...');
 
