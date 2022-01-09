@@ -25,9 +25,9 @@ module.exports = class ButtonLed {
     });
   }
 
-  lightLed() {
+  lightLed(timeInSec) {
     LED.writeSync(1);
-    sleep.sleep(1);
+    sleep.sleep(timeInSec);
     LED.writeSync(0);
   }
 };
