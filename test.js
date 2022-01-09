@@ -2,7 +2,7 @@ const ButtonLed = require('./modules/buttonLed');
 const Camera = require('./modules/camera');
 const Display = require('./modules/display');
 const OpenAlpr = require('./apps/openAlpr');
-const { uploadPhoto } = require('./http/plateRecognizer');
+const plateRecognizer = require('./http/plateRecognizer');
 
 const buttonLed = new ButtonLed();
 const camera = new Camera();
@@ -35,7 +35,7 @@ buttonLed.watchButton(async function () {
 
     try {
       display.setText(`${appTitle}\nUploading photo...`);
-      const response = await uploadPhoto(filePath);
+      const response = await plateRecognizer.uploadPhoto(filePath);
 
       if (response) {
         console.log({ response });
