@@ -12,7 +12,7 @@ module.exports = class Camera {
     const path = `${DIR}${fileName}${EXTENSION}`;
 
     return new Promise((resolve, reject) => {
-      exec(`libcamera-jpeg --nopreview -o ${path}`, (error, stdout, stderr) => {
+      exec(`libcamera-still --nopreview -o ${path}`, (error, stdout, stderr) => {
         if (error) {
           console.log({ error }, `${logPrefix} Problem while taking photo`);
           reject(stderr);
