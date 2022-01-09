@@ -4,22 +4,23 @@ const GrovePi = require('node-grovepi').GrovePi;
 const Board = GrovePi.board;
 const DISPLAY_TEXT_ADDR = 0x3e;
 
+const logPrefix = '[Display]';
+
 function textCommand(i2c1, cmd) {
   i2c1.writeByteSync(DISPLAY_TEXT_ADDR, 0x80, cmd);
 }
 
 module.exports = class Display {
   constructor() {
-    // TODO: needs refactor
     var board = new Board({
       debug: true,
       onError: function (error) {
-        console.log('Something wrong just happened');
-        console.log({ error });
+        console.log({ error }, `${logPrefix} Something wrong just happened`);
+        console.log();
       },
       onInit: function (res) {
         if (res) {
-          console.log('GrovePi Version :: ' + board.version());
+          console.log('GrovePi Version :: ' + board.version);
         }
       },
     });

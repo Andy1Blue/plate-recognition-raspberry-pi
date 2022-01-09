@@ -3,10 +3,13 @@ const LED = new Gpio(16, 'out');
 const pushButton = new Gpio(17, 'in', 'both');
 const sleep = require('sleep');
 
+const logPrefix = '[ButtonLed]';
+
 function unexportOnClose() {
   LED.writeSync(0);
   LED.unexport();
   pushButton.unexport();
+  console.log('closing');
 }
 
 module.exports = class ButtonLed {
@@ -16,8 +19,9 @@ module.exports = class ButtonLed {
 
   watchButton(callback) {
     pushButton.watch(function (err, value) {
-      if (err) {
-        console.error('There was an error', err);
+      if (error) {
+        console.log({ error }, `${logPrefix} Problem while init button`);
+
         return;
       }
 
