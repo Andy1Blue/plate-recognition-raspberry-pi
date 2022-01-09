@@ -9,7 +9,6 @@ function unexportOnClose() {
   LED.writeSync(0);
   LED.unexport();
   pushButton.unexport();
-  console.log('closing');
 }
 
 module.exports = class ButtonLed {
