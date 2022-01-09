@@ -23,6 +23,8 @@ buttonLed.watchButton(async function () {
     display.setText(`${appTitle}\nTaking photo ERROR!`);
   }
 
+  console.log({ filePath });
+
   if (filePath) {
     try {
       display.setText(`${appTitle}\nOpenAlpr analyzing`);

@@ -14,10 +14,10 @@ module.exports = class Camera {
     return new Promise((resolve, reject) => {
       exec(`libcamera-still -t 0 -e jpg -r -n ${rotate && '--rotation 180'} -o ${path}`, (error, stdout, stderr) => {
         // libcamera-still can throw false negative errors
-        // if (error) {
-        //   console.log({ error }, `${logPrefix} Problem while taking photo`);
-        //   reject(stderr);
-        // }
+        if (error) {
+          console.log({ error }, `${logPrefix} Problem while taking photo`);
+          reject(stderr);
+        }
 
         console.log({ stdout, stderr }, `${logPrefix} Photo was taken`);
         resolve(path);
