@@ -27,19 +27,21 @@ async function takePhoto() {
 
 async function openAlprCheckPhoto() {
   display.setText(`${appTitle}\nOpenAlpr analyzing`);
-  let openAlprResults = [];
+  let result = '';
 
   try {
     const openAlprResult = await openAlpr.checkPhoto(filePath, undefined);
 
     if (openAlprResult) {
-      openAlprResults = openAlprResult.results;
+      console.log({ openAlprResult });
+
+      result = openAlprResult.results[0];
     }
   } catch {
     display.setText(`${appTitle}\nOpenAlpr ERROR!`);
   }
 
-  return openAlprResults;
+  return result;
 }
 
 async function plateRecognizerCheckPhoto() {
@@ -70,12 +72,9 @@ buttonLed.watchButton(async function () {
   const filePath = await takePhoto();
 
   if (filePath) {
-    let result = 'No result';
-    const openAlprResults = await openAlprCheckPhoto();
+    let result = await openAlprCheckPhoto();
 
-    console.log({ openAlprResults });
-
-    if (openAlprResults.length === 0) {
+    if (!result) {
       result = await plateRecognizerCheckPhoto();
     }
 
