@@ -24,24 +24,26 @@ buttonLed.watchButton(async function () {
   }
 
   if (filePath) {
+    let result = 'No result';
     let openAlprResults = [];
     try {
       display.setText(`${appTitle}\nOpenAlpr analyzing`);
-      openAlprResults = (await openAlpr.checkPhoto(filePath).results) || [];
+      openAlprResults = await openAlpr.checkPhoto(filePath);
     } catch {
       display.setText(`${appTitle}\nOpenAlpr ERROR!`);
     }
 
     console.log({ openAlprResults });
 
-    if (openAlprResults.length === 0) {
+    if (!openAlprResults || openAlprResults.length === 0) {
       try {
         display.setText(`${appTitle}\nUploading photo...`);
         const response = await plateRecognizer.uploadPhoto(filePath);
 
         if (response) {
-          display.setText(`${appTitle}\n${response.results}`);
           console.log({ results: response.results });
+
+          result = response.results[0].plate;
         }
       } catch (error) {
         display.setText(`${appTitle}\nUploading ERROR!`);
@@ -49,5 +51,7 @@ buttonLed.watchButton(async function () {
         return;
       }
     }
+
+    display.setText(`${appTitle}\n${result}`);
   }
 });
