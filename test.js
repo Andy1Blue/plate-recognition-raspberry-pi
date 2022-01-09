@@ -11,18 +11,26 @@ buttonLed.watchButton(async function () {
   buttonLed.lightLed(1);
   display.setText('-- Hello --\n# Plate reco #');
 
-  const fileName = await camera.takePhoto();
+  let filePath;
+  try {
+    display.setText('# Plate reco #\nTaking photo...');
+    filePath = await camera.takePhoto();
+  } catch (error) {
+    display.setText('# Plate reco #\nTaking photo ERROR!');
+  }
 
-  display.setText('# Plate reco #\nTaking photo...');
+  if (filePath) {
+    try {
+      const response = await uploadPhoto(filePath);
 
-  if (fileName) {
-    const response = await uploadPhoto(`./photos/${fileName}`);
+      display.setText('# Plate reco #\nUploading photo...');
 
-    display.setText('# Plate reco #\nUploading photo...');
-
-    if (response) {
-      console.log({ response });
-      display.setText(`# Plate reco #\n${response}`);
+      if (response) {
+        console.log({ response });
+        display.setText(`# Plate reco #\n${response}`);
+      }
+    } catch (error) {
+      display.setText('# Plate reco #\nUploading/response ERROR!');
     }
   }
 });
