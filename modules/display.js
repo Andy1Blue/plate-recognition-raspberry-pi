@@ -1,5 +1,5 @@
 const i2c = require('i2c-bus');
-const sleep = require('./node_modules/sleep/');
+const sleep = require('sleep');
 const GrovePi = require('node-grovepi').GrovePi;
 const Board = GrovePi.board;
 const DISPLAY_RGB_ADDR = 0x62;
