@@ -12,7 +12,7 @@ module.exports = class Camera {
     const path = `${DIR}${fileName}${EXTENSION}`;
 
     return new Promise((resolve, reject) => {
-      exec(`libcamera-still -n -t 0 -o ${path}`, (error, stdout, stderr) => {
+      exec(`libcamera-still -e jpg -n -o ${path} -t 100 --rotate 180`, (error, stdout, stderr) => {
         // libcamera-still can throw false negative errors
         if (error) {
           console.log({ error }, `${logPrefix} Problem while taking photo`);
