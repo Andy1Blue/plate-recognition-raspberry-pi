@@ -1,7 +1,7 @@
-var Gpio = require('onoff').Gpio;
-var LED = new Gpio(16, 'out');
-var pushButton = new Gpio(17, 'in', 'both');
-var sleep = require('sleep');
+const Gpio = require('onoff').Gpio;
+const LED = new Gpio(16, 'out');
+const pushButton = new Gpio(17, 'in', 'both');
+const sleep = require('sleep');
 
 function unexportOnClose() {
   LED.writeSync(0);

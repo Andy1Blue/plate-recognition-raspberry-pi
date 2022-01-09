@@ -1,9 +1,9 @@
-var i2c = require('./node_modules/i2c-bus/i2c-bus');
-var sleep = require('./node_modules/sleep/');
-var GrovePi = require('node-grovepi').GrovePi;
-var Board = GrovePi.board;
-var DISPLAY_RGB_ADDR = 0x62;
-var DISPLAY_TEXT_ADDR = 0x3e;
+const i2c = require('i2c-bus');
+const sleep = require('./node_modules/sleep/');
+const GrovePi = require('node-grovepi').GrovePi;
+const Board = GrovePi.board;
+const DISPLAY_RGB_ADDR = 0x62;
+const DISPLAY_TEXT_ADDR = 0x3e;
 
 function setRGB(i2c1, r, g, b) {
   i2c1.writeByteSync(DISPLAY_RGB_ADDR, 0, 0);
