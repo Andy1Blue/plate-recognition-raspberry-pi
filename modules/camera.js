@@ -8,7 +8,7 @@ module.exports = class Camera {
 
   takePhoto(fileName = Date.now()) {
     return new Promise((resolve, reject) => {
-      exec(`libcamera-jpeg -o ${DIR}${fileName}${EXTENSION}`, (error, stdout, stderr) => {
+      exec(`libcamera-jpeg -o ${fileName}${EXTENSION}`, (error, stdout, stderr) => {
         if (error) {
           reject(stderr);
         }
