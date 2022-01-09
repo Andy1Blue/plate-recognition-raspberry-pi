@@ -16,6 +16,7 @@ buttonLed.watchButton(async function () {
     display.setText('# Plate reco #\nTaking photo...');
     filePath = await camera.takePhoto();
   } catch (error) {
+    console.log({ error });
     display.setText('# Plate reco #\nTaking photo ERROR!');
   }
 
@@ -30,7 +31,8 @@ buttonLed.watchButton(async function () {
         display.setText(`# Plate reco #\n${response}`);
       }
     } catch (error) {
-      display.setText('# Plate reco #\nUploading/response ERROR!');
+      console.log({ error });
+      display.setText('# Plate reco #\nUploading ERROR!');
     }
   }
 });
