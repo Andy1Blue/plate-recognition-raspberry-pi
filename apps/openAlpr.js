@@ -5,7 +5,7 @@ const logPrefix = '[openAlpr]';
 module.exports = class OpenAlpr {
   constructor() {}
 
-  checkPhoto(path, country = 'eu') {
+  checkPhoto(path, country) {
     return new Promise((resolve, reject) => {
       exec(
         `alpr -j -c ${country} ${path}`,
