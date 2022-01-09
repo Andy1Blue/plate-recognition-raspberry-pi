@@ -2,17 +2,7 @@ const i2c = require('i2c-bus');
 const sleep = require('sleep');
 const GrovePi = require('node-grovepi').GrovePi;
 const Board = GrovePi.board;
-const DISPLAY_RGB_ADDR = 0x62;
 const DISPLAY_TEXT_ADDR = 0x3e;
-
-function setRGB(i2c1, r, g, b) {
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 0, 0);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 1, 0);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 0x08, 0xaa);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 4, r);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 3, g);
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR, 2, b);
-}
 
 function textCommand(i2c1, cmd) {
   i2c1.writeByteSync(DISPLAY_TEXT_ADDR, 0x80, cmd);
@@ -39,7 +29,6 @@ module.exports = class Display {
   setText(i2c1, text) {
     var i2c1 = i2c.openSync(1);
 
-    setRGB(i2c1, 55, 55, 255);
     textCommand(i2c1, 0x01); // clear display
     sleep.usleep(50000);
     textCommand(i2c1, 0x08 | 0x04); // display on, no cursor
