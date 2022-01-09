@@ -16,7 +16,7 @@ module.exports = class OpenAlpr {
           }
 
           console.log({ stdout, stderr }, `${logPrefix} Photo checked by Alpr`);
-          resolve(JSON.stringify(stdout));
+          resolve(JSON.parse(stdout));
         }
       );
     });

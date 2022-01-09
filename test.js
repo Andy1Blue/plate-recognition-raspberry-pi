@@ -23,8 +23,6 @@ buttonLed.watchButton(async function () {
     display.setText(`${appTitle}\nTaking photo ERROR!`);
   }
 
-  console.log({ filePath });
-
   if (filePath) {
     try {
       display.setText(`${appTitle}\nOpenAlpr analyzing`);
@@ -35,18 +33,18 @@ buttonLed.watchButton(async function () {
       display.setText(`${appTitle}\nOpenAlpr ERROR!`);
     }
 
-    // try {
-    //   display.setText(`${appTitle}\nUploading photo...`);
-    //   const response = await uploadPhoto(filePath);
+    try {
+      display.setText(`${appTitle}\nUploading photo...`);
+      const response = await uploadPhoto(filePath);
 
-    //   if (response) {
-    //     console.log({ response });
-    //     display.setText(`${appTitle}\n${response}`);
-    //   }
-    // } catch (error) {
-    //   display.setText(`${appTitle}\nUploading ERROR!`);
+      if (response) {
+        console.log({ response });
+        display.setText(`${appTitle}\n${response}`);
+      }
+    } catch (error) {
+      display.setText(`${appTitle}\nUploading ERROR!`);
 
-    //   return;
-    // }
+      return;
+    }
   }
 });
