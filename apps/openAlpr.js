@@ -8,7 +8,7 @@ module.exports = class OpenAlpr {
   checkPhoto(path, country = 'eu') {
     return new Promise((resolve, reject) => {
       exec(
-        `alpr --clock -j -c ${country} ${path}`,
+        `alpr -j -c ${country} ${path}`,
         (error, stdout, stderr) => {
           if (error) {
             console.log({ error }, `${logPrefix} Problem while checking with Alpr`);
@@ -16,7 +16,7 @@ module.exports = class OpenAlpr {
           }
 
           console.log({ stdout, stderr }, `${logPrefix} Photo checked by Alpr`);
-          resolve(stdout);
+          resolve(JSON.stringify(stdout));
         }
       );
     });
