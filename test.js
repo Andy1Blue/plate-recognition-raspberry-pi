@@ -18,7 +18,7 @@ buttonLed.watchButton(async function () {
   let filePath;
   try {
     display.setText(`${appTitle}\nTaking photo...`);
-    filePath = await camera.takePhoto();
+    filePath = await camera.takePhoto(undefined, true);
   } catch (error) {
     display.setText(`${appTitle}\nTaking photo ERROR!`);
 

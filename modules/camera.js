@@ -8,22 +8,19 @@ const logPrefix = '[Camera]';
 module.exports = class Camera {
   constructor() {}
 
-  takePhoto(fileName = Date.now()) {
+  takePhoto(fileName = Date.now(), rotate = false) {
     const path = `${DIR}${fileName}${EXTENSION}`;
 
     return new Promise((resolve, reject) => {
-      exec(
-        `libcamera-still -t 0 -e jpg -r -n --rotation 180 -o ${path}`,
-        (error, stdout, stderr) => {
-          if (error) {
-            console.log({ error }, `${logPrefix} Problem while taking photo`);
-            reject(stderr);
-          }
-
-          console.log({ stdout, stderr }, `${logPrefix} Photo was taken`);
-          resolve(path);
+      exec(`libcamera-still -t 0 -e jpg -r -n ${rotate && '--rotation 180'} -o ${path}`, (error, stdout, stderr) => {
+        if (error) {
+          console.log({ error }, `${logPrefix} Problem while taking photo`);
+          reject(stderr);
         }
-      );
+
+        console.log({ stdout, stderr }, `${logPrefix} Photo was taken`);
+        resolve(path);
+      });
     });
   }
 };
