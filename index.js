@@ -1,63 +1,84 @@
-var i2c = require("./node_modules/i2c-bus/i2c-bus");
-var sleep = require("./node_modules/sleep/");
-var GrovePi = require("node-grovepi").GrovePi
+const ButtonLed = require('./modules/buttonLed');
+const Camera = require('./modules/camera');
+const Display = require('./modules/display');
+const OpenAlpr = require('./apps/openAlpr');
 
-var Board = GrovePi.board
+const plateRecognizer = require('./http/plateRecognizer');
 
-var DISPLAY_RGB_ADDR = 0x62;
-var DISPLAY_TEXT_ADDR = 0x3e;
+const buttonLed = new ButtonLed();
+const camera = new Camera();
+const display = new Display();
+const openAlpr = new OpenAlpr();
 
-function setRGB(i2c1, r, g, b) {
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR,0,0)
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR,1,0)
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR,0x08,0xaa)
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR,4,r)
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR,3,g)
-  i2c1.writeByteSync(DISPLAY_RGB_ADDR,2,b)
-}
+const appTitle = '# Plate reco #';
 
-function textCommand(i2c1, cmd) {
-  i2c1.writeByteSync(DISPLAY_TEXT_ADDR, 0x80, cmd);
-}
+async function takePhoto() {
+  display.setText(`${appTitle}\nTaking photo...`);
+  const filePath = '';
 
-function setText(i2c1, text) {
-  textCommand(i2c1, 0x01) // clear display
-  sleep.usleep(50000);
-  textCommand(i2c1, 0x08 | 0x04) // display on, no cursor
-  textCommand(i2c1, 0x28) // 2 lines
-  sleep.usleep(50000);
-  var count = 0;
-  var row = 0;
-  for(var i = 0, len = text.length; i < len; i++) {
-    if(text[i] === "\n" || count === 16) {
-      count = 0;
-      row ++;
-        if(row === 2)
-          break;
-      textCommand(i2c1, 0xc0)
-      if(text[i] === "\n")
-        continue;
-    }
-    count++;
-    i2c1.writeByteSync(DISPLAY_TEXT_ADDR, 0x40, text[i].charCodeAt(0));
+  try {
+    filePath = await camera.takePhoto(undefined, true);
+  } catch (error) {
+    display.setText(`${appTitle}\nTaking photo ERROR!`);
   }
+
+  return filePath;
 }
 
-var board = new Board({
-    debug: true,
-    onError: function(err) {
-      console.log("Something wrong just happened")
-      console.log(err)
-    },
-    onInit: function(res) {
-      if (res) {
-        console.log("GrovePi Version :: " + board.version())
+async function openAlprCheckPhoto() {
+  display.setText(`${appTitle}\nOpenAlpr analyzing`);
+  let openAlprResults = [];
 
-        var i2c1 = i2c.openSync(1);
-        setText(i2c1, "Memet is een\nEINDBAAS");
-        setRGB(i2c1, 55, 55, 255);
-        i2c1.closeSync();
-      }
+  try {
+    const openAlprResult = await openAlpr.checkPhoto(filePath);
+
+    if (openAlprResult) {
+      openAlprResults = openAlprResult.results;
     }
-  })
-board.init();
+  } catch {
+    display.setText(`${appTitle}\nOpenAlpr ERROR!`);
+  }
+
+  return openAlprResults;
+}
+
+async function plateRecognizerCheckPhoto() {
+  display.setText(`${appTitle}\nUploading photo...`);
+  let result = '';
+
+  try {
+    const response = await plateRecognizer.uploadPhoto(filePath);
+
+    if (response) {
+      const plateRecognizerResults = response.results;
+
+      console.log({ plateRecognizerResults });
+
+      result = response.results[0].plate;
+    }
+  } catch (error) {
+    display.setText(`${appTitle}\nUploading ERROR!`);
+  }
+
+  return result;
+}
+
+buttonLed.watchButton(async function () {
+  buttonLed.lightLed(1);
+  display.setText(`${appTitle}\n-- Hello --`);
+
+  const filePath = await takePhoto();
+
+  if (filePath) {
+    let result = 'No result';
+    const openAlprResults = await openAlprCheckPhoto();
+
+    console.log({ openAlprResults });
+
+    if (openAlprResults.length === 0) {
+      result = await plateRecognizerCheckPhoto();
+    }
+
+    display.setText(`${appTitle}\n${result}`);
+  }
+});
