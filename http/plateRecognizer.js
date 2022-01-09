@@ -1,3 +1,4 @@
+var fs = require('fs');
 const FormData = require('form-data');
 const { allowedHttpMethod, http } = require('./http');
 
