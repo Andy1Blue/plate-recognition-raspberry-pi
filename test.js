@@ -15,21 +15,26 @@ buttonLed.watchButton(async function () {
   buttonLed.lightLed(1);
   display.setText(`${appTitle}\n-- Hello --`);
 
-  display.setText(`${appTitle}\nTaking photo...`);
-  const filePath = await camera.takePhoto(undefined, true);
+  let filePath;
+  try {
+    display.setText(`${appTitle}\nTaking photo...`);
+    filePath = await camera.takePhoto(undefined, true);
+  } catch (error) {
+    display.setText(`${appTitle}\nTaking photo ERROR!`);
+  }
 
   if (filePath) {
     try {
-      display.setText(`${appTitle}\nOpenAlpr analyzing`);
-      const openAlprResult = await openAlpr.checkPhoto(filePath);
+    display.setText(`${appTitle}\nOpenAlpr analyzing`);
+       const openAlprResult = await openAlpr.checkPhoto(filePath);
 
-      console.log({ openAlprResult });
+       console.log({openAlprResult})
     } catch {
-      display.setText(`${appTitle}\nOpenAlpr ERROR!`);
+        display.setText(`${appTitle}\nOpenAlpr ERROR!`);
     }
 
     // try {
-    //   display.setText(`${appTitle}\nUploading photo...`);
+        //   display.setText(`${appTitle}\nUploading photo...`);
     //   const response = await uploadPhoto(filePath);
 
     //   if (response) {
