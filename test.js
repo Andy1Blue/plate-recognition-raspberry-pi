@@ -40,8 +40,8 @@ buttonLed.watchButton(async function () {
         const response = await plateRecognizer.uploadPhoto(filePath);
 
         if (response) {
-          console.log({ response });
-          display.setText(`${appTitle}\n${response}`);
+          display.setText(`${appTitle}\n${response.results}`);
+          console.log({ results: response.results });
         }
       } catch (error) {
         display.setText(`${appTitle}\nUploading ERROR!`);
