@@ -7,9 +7,10 @@
 * Grove - LCD Display 2x16 I2C v2.0 red-black
 * Grove - Push Button with yellow LED
 
-## Devices photo
+## Video
 
-TODO
+
+[![Video](https://img.youtube.com/vi/pURU196tUVQ/0.jpg)](https://www.youtube.com/watch?v=pURU196tUVQ "Video")
 
 ## How to install
 
